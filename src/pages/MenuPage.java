@@ -41,10 +41,25 @@ public class MenuPage extends javax.swing.JFrame {
         });
 
         btnAddProductRecord.setText("Add Product Record");
+        btnAddProductRecord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddProductRecordActionPerformed(evt);
+            }
+        });
 
         btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
 
         btnViewProduct.setText("View Product");
+        btnViewProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewProductActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -78,10 +93,31 @@ public class MenuPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditProfileActionPerformed
-        setVisible(false); 
+        setVisible(false);
         ProfilePage profilePage = new ProfilePage();
         profilePage.setVisible(true);
     }//GEN-LAST:event_btnEditProfileActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        LoginPage loginObj = new LoginPage();
+        loginObj.setVisible(true);
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnViewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewProductActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        ViewProductPage vppObj = new ViewProductPage();
+        vppObj.setVisible(true);
+    }//GEN-LAST:event_btnViewProductActionPerformed
+
+    private void btnAddProductRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductRecordActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        ProductPage ppObj = new ProductPage();
+        ppObj.setVisible(true);
+    }//GEN-LAST:event_btnAddProductRecordActionPerformed
 
     /**
      * @param args the command line arguments

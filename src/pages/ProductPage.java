@@ -26,7 +26,7 @@ public class ProductPage extends javax.swing.JFrame {
      */
     public ProductPage() {
         initComponents();
-
+        txtDep.setText(LoginPage.u.getUser_company_name());
         dtpArrTime.setDateTimeStrict(LocalDateTime.now());
         dtpDepTime.setDateTimeStrict(LocalDateTime.now());
     }
@@ -79,6 +79,13 @@ public class ProductPage extends javax.swing.JFrame {
             }
         });
 
+        txtDep.setEditable(false);
+        txtDep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDepActionPerformed(evt);
+            }
+        });
+
         txtDest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDestActionPerformed(evt);
@@ -93,6 +100,11 @@ public class ProductPage extends javax.swing.JFrame {
         });
 
         btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -201,6 +213,18 @@ public class ProductPage extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnAddProductActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        MenuPage menuObj = new MenuPage();
+        menuObj.setVisible(true);
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void txtDepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDepActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txtDepActionPerformed
 
     private void generateBlockChain() {
         String dir = "datafolders";

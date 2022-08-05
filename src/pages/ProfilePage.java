@@ -17,7 +17,7 @@ public class ProfilePage extends javax.swing.JFrame {
     /**
      * Creates new form ProfilePage
      */
-    public ProfilePage() {        
+    public ProfilePage() {
         initComponents();
         txtEmail.setText(LoginPage.u.getUser_email());
         txtPassword.setText(LoginPage.u.getPassword());
@@ -164,11 +164,10 @@ public class ProfilePage extends javax.swing.JFrame {
 
     private void btnApplyChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyChangesActionPerformed
         boolean flag = true;
-        
+
 //        if (validation()==false) {
 //            flag = false;
 //        }
-       
         if (flag) {
             User u = User.getUsesrByID(LoginPage.u.getUser_ID());
             u.setUser_email(txtEmail.getText());
@@ -179,30 +178,27 @@ public class ProfilePage extends javax.swing.JFrame {
             u.setKey(LoginPage.u.getKey());
             u.setKeyPairDirectory(LoginPage.u.getKeyPairDirectory());
             if (!u.getUser_email().equals(LoginPage.u.getUser_email())) {
-                if (userControl.update(u)){
+                if (userControl.update(u)) {
                     JOptionPane.showMessageDialog(this, "Record Updated!");
-                } else{
-                    JOptionPane.showMessageDialog(this, "Something went wrong"); 
+                } else {
+                    JOptionPane.showMessageDialog(this, "Something went wrong");
                 }
-                
-            }else{
-                if (u.update()){
+
+            } else {
+                if (u.update()) {
                     JOptionPane.showMessageDialog(this, "Record Updated!");
-                } else{
-                    JOptionPane.showMessageDialog(this, "Something went wrong"); 
+                } else {
+                    JOptionPane.showMessageDialog(this, "Something went wrong");
                 }
             }
-            
+
         }
     }//GEN-LAST:event_btnApplyChangesActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-//        if (userControl.delete(LoginPage.u)) {
-//          JOptionPane.showMessageDialog(this, "Record Deleted!");
-//        } else{
-//            JOptionPane.showMessageDialog(this, "Something went wrong");
-//        }  
-//        
+        this.dispose();
+        MenuPage menuObj = new MenuPage();
+        menuObj.setVisible(true);
 
     }//GEN-LAST:event_btnBackActionPerformed
 

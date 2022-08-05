@@ -4,17 +4,43 @@
  */
 package pages;
 
+import dataclasses.ProductRecord;
+import java.util.List;
+import java.util.Optional;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author caesa
  */
 public class ViewProductPage extends javax.swing.JFrame {
 
+    DefaultTableModel model;
+
     /**
      * Creates new form ViewProductPage
      */
     public ViewProductPage() {
         initComponents();
+        initializeTable();
+    }
+
+    private void initializeTable() {
+        model = (DefaultTableModel) productTable.getModel();
+        productTable.setAutoCreateRowSorter(true);
+        List<ProductRecord> pDetails = ProductRecord.getProductRecordByID("");
+        for (int i = 0; i < pDetails.size(); i++) {
+            model.insertRow(model.getRowCount(), new Object[]{
+                pDetails.get(i).getProductID(),
+                pDetails.get(i).getProductName(),
+                pDetails.get(i).getProductStatus(),
+                pDetails.get(i).getArivedTimeStamp(),
+                pDetails.get(i).getDepature(),
+                pDetails.get(i).getDepatureTimeStamp(),
+                pDetails.get(i).getDestination()
+            });
+
+        }
     }
 
     /**
@@ -27,14 +53,15 @@ public class ViewProductPage extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        productTable = new javax.swing.JTable();
+        txtSearch = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         btnResetTable = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        productTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -42,7 +69,7 @@ public class ViewProductPage extends javax.swing.JFrame {
                 "Product ID", "Product Name", "Status", "Arrival Time", "Depature", "Depature Time Stamp", "Destination"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(productTable);
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -52,6 +79,18 @@ public class ViewProductPage extends javax.swing.JFrame {
         });
 
         btnResetTable.setText("Reset Table");
+        btnResetTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetTableActionPerformed(evt);
+            }
+        });
+
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -60,21 +99,24 @@ public class ViewProductPage extends javax.swing.JFrame {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 926, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSearch)
                 .addGap(18, 18, 18)
                 .addComponent(btnResetTable)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBack)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch)
-                    .addComponent(btnResetTable))
+                    .addComponent(btnResetTable)
+                    .addComponent(btnBack))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -85,7 +127,49 @@ public class ViewProductPage extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
+        productTable.setAutoCreateRowSorter(true);
+        model = (DefaultTableModel) productTable.getModel();
+        model.setRowCount(0);
+        String queryString = txtSearch.getText();
+        List<ProductRecord> pDetailsByID = ProductRecord.getProductRecordByID(queryString);
+        for (int i = 0; i < pDetailsByID.size(); i++) {
+            model.insertRow(model.getRowCount(), new Object[]{
+                pDetailsByID.get(i).getProductID(),
+                pDetailsByID.get(i).getProductName(),
+                pDetailsByID.get(i).getProductStatus(),
+                pDetailsByID.get(i).getArivedTimeStamp(),
+                pDetailsByID.get(i).getDepature(),
+                pDetailsByID.get(i).getDepatureTimeStamp(),
+                pDetailsByID.get(i).getDestination()
+            });
+
+        }
+
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnResetTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetTableActionPerformed
+        // TODO add your handling code here:
+        model = (DefaultTableModel) productTable.getModel();
+        model.setRowCount(0);
+        initializeTable();
+
+    }//GEN-LAST:event_btnResetTableActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+
+        if (LoginPage.u.getUser_ID() != null) {
+            this.dispose();
+            MenuPage menuObj = new MenuPage();
+            menuObj.setVisible(true);
+
+        } else {
+            this.dispose();
+            LoginPage loginObj = new LoginPage();
+            loginObj.setVisible(true);
+        }
+
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -101,16 +185,24 @@ public class ViewProductPage extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewProductPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewProductPage.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewProductPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewProductPage.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewProductPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewProductPage.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewProductPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewProductPage.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -123,10 +215,11 @@ public class ViewProductPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnResetTable;
     private javax.swing.JButton btnSearch;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable productTable;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

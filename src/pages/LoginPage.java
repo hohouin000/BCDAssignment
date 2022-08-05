@@ -5,8 +5,6 @@
 package pages;
 
 import dataclasses.User;
-import dataclasses.userControl;
-import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,8 +17,8 @@ public class LoginPage extends javax.swing.JFrame {
      * Creates new form LoginPage
      */
     public LoginPage() {
-        List<User> uList = User.getAllUsers();
-        uList.forEach(userControl::addnew);
+//        List<User> uList = User.getAllUsers();
+//        uList.forEach(userControl::addnew);
         initComponents();
     }
     public static User u = new User();
@@ -61,6 +59,11 @@ public class LoginPage extends javax.swing.JFrame {
         });
 
         btnViewProduct.setText("View Product");
+        btnViewProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewProductActionPerformed(evt);
+            }
+        });
 
         lblGuest.setText("Guest");
 
@@ -110,17 +113,23 @@ public class LoginPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-      User user = User.Login(txtEmail.getText(), txtPassword.getText());
-      if (user!=null) {
-        setVisible(false); 
-        MenuPage menuPage = new MenuPage();
-        menuPage.setVisible(true);  
-        u = user;
-      }
-      else{
-          JOptionPane.showMessageDialog(this, "Username or password is wrong");
-      }
+        User user = User.Login(txtEmail.getText(), txtPassword.getText());
+        if (user != null) {
+            setVisible(false);
+            MenuPage menuPage = new MenuPage();
+            menuPage.setVisible(true);
+            u = user;
+        } else {
+            JOptionPane.showMessageDialog(this, "Username or password is wrong");
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnViewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewProductActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        ViewProductPage vppObj = new ViewProductPage();
+        vppObj.setVisible(true);
+    }//GEN-LAST:event_btnViewProductActionPerformed
 
     /**
      * @param args the command line arguments
