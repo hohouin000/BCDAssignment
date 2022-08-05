@@ -4,6 +4,8 @@
  */
 package pages;
 
+import dataclasses.User;
+
 /**
  *
  * @author caesa
@@ -99,7 +101,7 @@ public class MenuPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditProfileActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        // TODO add your handling code here:
+        LoginPage.u = new User();
         this.dispose();
         LoginPage loginObj = new LoginPage();
         loginObj.setVisible(true);
