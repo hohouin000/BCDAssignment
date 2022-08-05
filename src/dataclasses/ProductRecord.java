@@ -23,7 +23,7 @@ public class ProductRecord {
 
     @Override
     public String toString() {
-        return productID + " | " + productName + " | " + productStatus + " | " + arivedTimeStamp + " | " + depature + " | " + depatureTimeStamp + " | " + destination;
+        return productID + "|" + productName + "|" + productStatus + "|" + arivedTimeStamp + "|" + depature + "|" + depatureTimeStamp + "|" + destination;
     }
 
     public ProductRecord() {

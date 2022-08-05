@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,26 +17,30 @@ import java.util.List;
  */
 public class User {
 
-    private String user_ID, user_email, password, user_category, user_company_name, user_company_phone;
+    private String user_ID, user_email, password, user_category, user_company_name, user_company_phone, keyPairDirectory, key;
 
     private final static String datapath = "datafolders/Users.txt";
 
     @Override
     public String toString() {
-        return user_ID + " | " + user_email + " | " + password + " | " + user_category + " | " + user_company_name + " | " + user_company_phone;
+        return key + "|" +user_ID + "|" + user_email + "|" + password + "|" + user_category + "|" + user_company_name + "|" + user_company_phone+ "|" +keyPairDirectory;
     }
 
     public User() {
     }
 
-    public User(String user_ID, String user_email, String password, String user_category, String user_company_name, String user_company_phone) {
+    public User(String user_ID, String user_email, String password, String user_category, String user_company_name, String user_company_phone, String keyPairDirectory, String key) {
         this.user_ID = user_ID;
         this.user_email = user_email;
         this.password = password;
         this.user_category = user_category;
         this.user_company_name = user_company_name;
         this.user_company_phone = user_company_phone;
+        this.keyPairDirectory = keyPairDirectory;
+        this.key = key;
     }
+
+    
 
     public String getUser_ID() {
         return user_ID;
@@ -85,6 +90,24 @@ public class User {
         this.user_company_phone = user_company_phone;
     }
 
+    public String getKeyPairDirectory() {
+        return keyPairDirectory;
+    }
+
+    public void setKeyPairDirectory(String keyPairDirectory) {
+        this.keyPairDirectory = keyPairDirectory;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+    
+    
+
     public static List<String> getAll() {
         try {
             return Files.readAllLines(Paths.get(datapath));
@@ -101,20 +124,34 @@ public class User {
 
         for (a = 0; a < data.size(); a++) {
             String[] split = data.get(a).split("[|]");
-            if (id.equals(split[0])) {
-                String user_ID = split[0];
-                String user_email = split[1];
-                String password = split[2];
-                String user_category = split[3];
-                String user_company_name = split[4];
-                String user_company_phone = split[5];
-
+            if (id.equals(split[1])) {
                 break;
-
             }
         }
         try {
             data.set(a, this.toString());
+        } catch (Exception e) {
+            return false;
+        }
+        String info = "";
+        for (int i = 0; i < data.size(); i++) {
+            info += data.get(i) + System.lineSeparator();
+        }
+        return rewriteFile(info);
+    }
+    public boolean delete() {
+        List<String> data = getAll();
+        String id = this.user_ID;
+        int a = 0;
+
+        for (a = 0; a < data.size(); a++) {
+            String[] split = data.get(a).split("[|]");
+            if (id.equals(split[1])) {
+                break;
+            }
+        }
+        try {
+            data.remove(a);
         } catch (Exception e) {
             return false;
         }
@@ -140,19 +177,70 @@ public class User {
 
         for (String string : data) {
             String[] split = string.split("[|]");
-            if (split[1].equals(email) && split[2].equals(pWord)) {
-                String user_ID = split[0];
-                String user_email = split[1];
-                String password = split[2];
-                String user_category = split[3];
-                String user_company_name = split[4];
-                String user_company_phone = split[5];
+            if (split[2].replace(" ", "").equals(email) && split[3].replace(" ", "").equals(pWord)) {
+                
+                String key=split[0];
+                String user_ID = split[1];
+                String user_email = split[2];
+                String password = split[3];
+                String user_category = split[4];
+                String user_company_name = split[5];
+                String user_company_phone = split[6];
+                String keyPairDirectory = split[7];
 
-                return new User(user_ID, user_email, password, user_category, user_company_name, user_company_phone);
+                return new User(user_ID, user_email, password, user_category, user_company_name, user_company_phone,keyPairDirectory,key);
             }
         }
 
         return null;
+
+    }
+    
+    public static User getUsesrByID(String Id) {
+        List<String> data = getAll();
+
+        for (String string : data) {
+            String[] split = string.split("[|]");
+            if (split[1].equals(Id)) {
+                String key=split[0];
+                String user_ID = split[1];
+                String user_email = split[2];
+                String password = split[3];
+                String user_category = split[4];
+                String user_company_name = split[5];
+                String user_company_phone = split[6];
+                String keyPairDirectory = split[7];
+
+                return new User(user_ID, user_email, password, user_category, user_company_name, user_company_phone,keyPairDirectory,key);
+            }
+        }
+
+        return null;
+
+    }
+    
+    public static ArrayList<User> getAllUsers() {
+        ArrayList<User> temp = new ArrayList<>();
+        List<String> data = getAll();
+
+        for (String string : data) {
+            String[] split = string.split("[|]");
+            String key=split[0];
+            String user_ID = split[1];
+            String user_email = split[2];
+            String password = split[3];
+            String user_category = split[4];
+            String user_company_name = split[5];
+            String user_company_phone = split[6];
+            String keyPairDirectory = split[7];
+
+             
+
+           temp.add(new User(user_ID, user_email, password, user_category, user_company_name, user_company_phone,keyPairDirectory,key));
+            
+        }
+
+        return temp;
 
     }
 

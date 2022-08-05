@@ -4,6 +4,11 @@
  */
 package pages;
 
+import dataclasses.User;
+import dataclasses.userControl;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author caesa
@@ -14,8 +19,11 @@ public class LoginPage extends javax.swing.JFrame {
      * Creates new form LoginPage
      */
     public LoginPage() {
+        List<User> uList = User.getAllUsers();
+        uList.forEach(userControl::addnew);
         initComponents();
     }
+    public static User u = new User();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,6 +54,11 @@ public class LoginPage extends javax.swing.JFrame {
         lblLogin.setText("Login");
 
         btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         btnViewProduct.setText("View Product");
 
@@ -93,7 +106,21 @@ public class LoginPage extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+      User user = User.Login(txtEmail.getText(), txtPassword.getText());
+      if (user!=null) {
+        setVisible(false); 
+        MenuPage menuPage = new MenuPage();
+        menuPage.setVisible(true);  
+        u = user;
+      }
+      else{
+          JOptionPane.showMessageDialog(this, "Username or password is wrong");
+      }
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments

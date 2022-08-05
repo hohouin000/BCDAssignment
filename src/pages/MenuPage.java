@@ -34,6 +34,11 @@ public class MenuPage extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnEditProfile.setText("Edit Profile");
+        btnEditProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditProfileActionPerformed(evt);
+            }
+        });
 
         btnAddProductRecord.setText("Add Product Record");
 
@@ -69,7 +74,14 @@ public class MenuPage extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEditProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditProfileActionPerformed
+        setVisible(false); 
+        ProfilePage profilePage = new ProfilePage();
+        profilePage.setVisible(true);
+    }//GEN-LAST:event_btnEditProfileActionPerformed
 
     /**
      * @param args the command line arguments
