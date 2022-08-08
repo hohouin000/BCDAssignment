@@ -6,10 +6,6 @@ import org.apache.commons.codec.binary.Hex;
 
 public class Hasher {
 
-    static public String md5(String input) {
-        return hash(input, "MD5");
-    }
-
     static public String sha256(String input) {
         return hash(input, "SHA-256");
     }
@@ -28,13 +24,6 @@ public class Hasher {
         }
     }
 
-    static public String sha384(String input) {
-        return hash(input, "SHA-384");
-    }
-
-    static public String sha512(String input) {
-        return hash(input, "SHA-512");
-    }
 
     /**
      * hash(String, String) : String
@@ -48,8 +37,6 @@ public class Hasher {
             md.update(input.getBytes());
 
             //add more secure value before hashing for the purpose to complicate the hashcode
-            //1) add special chars
-            //md.update( "secretchars".getBytes() );
             //2) add salting concept
             md.update(Salt.generate());
 
