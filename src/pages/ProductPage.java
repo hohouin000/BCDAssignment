@@ -4,14 +4,23 @@
  */
 package pages;
 
+import adapters.TrnxPoolAdapter;
 import blockchain.Block;
 import blockchain.Blockchain;
 import com.google.common.collect.Lists;
 import dataclasses.ProductRecord;
+import ds.DigitalSignature;
+import ds.KeyPairAccess;
 import java.io.File;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.javatuples.Pair;
+import org.javatuples.Tuple;
 import transaction.Transaction;
 import transaction.TransactionDA;
 
@@ -198,9 +207,16 @@ public class ProductPage extends javax.swing.JFrame {
         String depTime = dtpDepTime.toString().replace("T", " ");
         String dest = txtDest.getText();
         if (!pID.isEmpty() && !pName.isEmpty() && !status.isEmpty()) {
-            ProductRecord prObj = new ProductRecord(pID, pName, status, arriTime, dep, depTime, dest);
-            ProductRecord.writeNewLineToFile(prObj.toString());
-            flag = true;
+            try {
+                ProductRecord prObj = new ProductRecord(pID, pName, status, arriTime, dep, depTime, dest);
+                PrivateKey prvKey = KeyPairAccess.getPrivateKey(LoginPage.u.getKeyPairDirectory());
+                DigitalSignature ds = new DigitalSignature();
+                Pair<String, String> signedPair = Pair.with(prObj.toString(), ds.sign(prObj.toString(), prvKey));
+                ProductRecord.writeNewLineToFile(signedPair);
+                flag = true;
+            } catch (Exception ex) {
+                Logger.getLogger(ProductPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if (flag) {
             JOptionPane.showMessageDialog(this, "Record Added!");
@@ -227,35 +243,25 @@ public class ProductPage extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDepActionPerformed
 
     private void generateBlockChain() {
-        String dir = "datafolders";
-        String myFile = "ProductRecord.txt";
-
-        TransactionDA daTranx = new TransactionDA(dir, myFile);
-
-        List<String> tranxLst = daTranx.getAll();
+        
         boolean noChain = !((new File(Blockchain.MASTER_BINARY).exists()) & (new File(Blockchain.LEDGER_FILE).exists()));
         if (noChain) {
             new File(Blockchain.MASTER_DIR).mkdir();
             //create genesis block
             Blockchain.genesis();
-            List<List<String>> subLst = Lists.partition(tranxLst, Transaction.SIZE);
-            for (List<String> lst : subLst) {
-                Transaction bag = new Transaction();
-                for (String line : lst) {
-                    bag.add(line);
-                }
-                //create nextBlock
-                Block b1 = new Block(
-                        Blockchain.get().getLast().getHeader().getCurrHash()
-                );
-                b1.setTranx(bag);
-                Blockchain.nextBlock(b1);
-                Blockchain.distribute();
-            }
+             generateBlock();
 
         } else {
-            List<List<String>> subLst = Lists.partition(tranxLst, Transaction.SIZE);
-            for (List<String> lst : subLst) {
+            generateBlock();
+
+        }
+    }
+    
+    static void generateBlock(){
+        List<String> tranxPool = TrnxPoolAdapter.getTransactionsHashes();
+        if (tranxPool.size()>=10) {
+            List<List<String>> subLst = Lists.partition(tranxPool, Transaction.SIZE);
+             for (List<String> lst : subLst) {
                 Transaction bag = new Transaction();
                 for (String line : lst) {
                     bag.add(line);
@@ -268,7 +274,7 @@ public class ProductPage extends javax.swing.JFrame {
                 Blockchain.nextBlock(b1);
                 Blockchain.distribute();
             }
-
+            TrnxPoolAdapter.empty();
         }
     }
 

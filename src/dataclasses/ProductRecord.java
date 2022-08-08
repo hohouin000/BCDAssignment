@@ -4,13 +4,17 @@
  */
 package dataclasses;
 
+import ds.DigitalSignature;
+import ds.KeyPairAccess;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import org.javatuples.Pair;
+import pages.LoginPage;
 
 /**
  *
@@ -20,6 +24,7 @@ public class ProductRecord {
 
     private String productID, productName, productStatus, arivedTimeStamp, depature, depatureTimeStamp, destination;
     private final static String datapath = "datafolders/ProductRecord.txt";
+    private final static String tranxpool = "datafolders/trnxpool.txt";
 
     @Override
     public String toString() {
@@ -104,16 +109,26 @@ public class ProductRecord {
         }
     }
 
-    public static boolean writeNewLineToFile(String data) {
+    public static boolean writeNewLineToFile(Pair<String, String> data) throws Exception {
         boolean status = true;
-        data = data + System.lineSeparator();
-        try {
-            Files.write(Paths.get(datapath),
-                    data.getBytes(),
-                    StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-        } catch (IOException ex) {
+        DigitalSignature ds = new DigitalSignature();
+        PublicKey pubKey = KeyPairAccess.getPublicKey(LoginPage.u.getKeyPairDirectory());
+        if (ds.verify(data.getValue0(), data.getValue1(), pubKey)) {
+            String stringdata = data.getValue0() + System.lineSeparator();
+            try {
+                Files.write(Paths.get(datapath),
+                        stringdata.getBytes(),
+                        StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                Files.write(Paths.get(tranxpool),
+                        stringdata.getBytes(),
+                        StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            } catch (IOException ex) {
+                status = false;
+            }
+        }else{
             status = false;
         }
+        
         return status;
     }
 
@@ -140,12 +155,5 @@ public class ProductRecord {
 
     }
 
-    public static void main(String[] args) {
-        ProductRecord p = new ProductRecord("P1", "test", "testing", "103050", "testmanufacturer", "235620", "testsupplier");
 
-        writeNewLineToFile(p.toString());
-        //System.out.println(getAll());
-
-        // System.out.println(getProductRecordByID(""));
-    }
 }

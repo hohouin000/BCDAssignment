@@ -2,6 +2,8 @@ package ds;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.Signature;
 import java.util.Base64;
 
@@ -36,10 +38,12 @@ public class DigitalSignature {
 
 	/**
 	 * sign()
+     * @param data
+     * @param prvKey
 	 */
-	public String sign(String data, KeyPair keyPair) throws Exception
+	public String sign(String data, PrivateKey prvKey) throws Exception
 	{
-		sig.initSign( keyPair.getPrivate() );
+		sig.initSign( prvKey );
 		sig.update(data.getBytes());
 		return Base64.getEncoder().encodeToString(sig.sign());
 	}
@@ -47,9 +51,9 @@ public class DigitalSignature {
 	/**
 	 * verify()
 	 */
-	public boolean verify(String data, String signature, KeyPair keyPair) throws Exception
+	public boolean verify(String data, String signature, PublicKey pubKey) throws Exception
 	{
-		sig.initVerify(keyPair.getPublic());
+		sig.initVerify(pubKey);
 		sig.update(data.getBytes());
 		return sig.verify( Base64.getDecoder().decode(signature));
 	}
