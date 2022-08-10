@@ -1,7 +1,5 @@
 package ds;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
@@ -11,21 +9,6 @@ public class DigitalSignature {
 
 
 	private Signature sig;
-
-	/**
-	 * Testing section (KeyPair)
-	 */
-//	private KeyPairGenerator keygen;
-//	private KeyPair keyPair;
-//	{
-//		try {
-//			keygen = KeyPairGenerator.getInstance("RSA");
-//			keyPair = keygen.generateKeyPair();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-	//==========================================================================
 	
 	public DigitalSignature() {
 		super();
@@ -38,8 +21,8 @@ public class DigitalSignature {
 
 	/**
 	 * sign()
-     * @param data
-     * @param prvKey
+        * @param data
+        * @param prvKey
 	 */
 	public String sign(String data, PrivateKey prvKey) throws Exception
 	{

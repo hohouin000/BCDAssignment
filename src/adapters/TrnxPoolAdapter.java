@@ -42,8 +42,7 @@ public class TrnxPoolAdapter {
     public static List<String> getTransactionsHashes(){
         List<String> trnxPool = TrnxPoolAdapter.getTransactions();
         //generate hash value of each data in Transaction
-            //collect using javatuple
-       
+           
         return trnxPool.stream().map(x->Hasher.sha256(x)).collect( Collectors.toList() );
     }
     

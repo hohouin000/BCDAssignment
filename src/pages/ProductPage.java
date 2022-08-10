@@ -13,16 +13,13 @@ import ds.DigitalSignature;
 import ds.KeyPairAccess;
 import java.io.File;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.javatuples.Pair;
-import org.javatuples.Tuple;
 import transaction.Transaction;
-import transaction.TransactionDA;
 
 /**
  *

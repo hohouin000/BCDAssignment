@@ -84,7 +84,7 @@ public class Blockchain {
         try (
                  FileOutputStream fout = new FileOutputStream(MASTER_BINARY);  ObjectOutputStream out = new ObjectOutputStream(fout);) {
             out.writeObject(db);
-            System.out.println(">> Master file updated!");
+            //System.out.println(">> Master file updated!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,7 +98,7 @@ public class Blockchain {
          * convert the chain to String using API
          */
         String chain = new GsonBuilder().setPrettyPrinting().create().toJson(db);
-        System.out.println(chain);
+        //System.out.println(chain);
         try {
             Files.write(
                     Paths.get(LEDGER_FILE), //targeted file
