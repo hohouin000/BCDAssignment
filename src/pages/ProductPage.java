@@ -218,6 +218,7 @@ public class ProductPage extends javax.swing.JFrame {
         if (flag) {
             JOptionPane.showMessageDialog(this, "Record Added!");
             generateBlockChain();
+            clearTxt();
         } else {
             JOptionPane.showMessageDialog(null,
                     "Invalid Input !",
@@ -254,7 +255,7 @@ public class ProductPage extends javax.swing.JFrame {
         }
     }
     
-    static void generateBlock(){
+    private void generateBlock(){
         List<String> tranxPool = TrnxPoolAdapter.getTransactionsHashes();
         if (tranxPool.size()>=10) {
             List<List<String>> subLst = Lists.partition(tranxPool, Transaction.SIZE);
@@ -273,6 +274,15 @@ public class ProductPage extends javax.swing.JFrame {
             }
             TrnxPoolAdapter.empty();
         }
+    }
+    
+    private void clearTxt(){
+        txtPID.setText("");
+        txtPName.setText("");
+        txtStatus.setText("");
+        dtpArrTime.setDateTimeStrict(LocalDateTime.now());
+        dtpDepTime.setDateTimeStrict(LocalDateTime.now());
+        txtDest.setText("");
     }
 
     /**
